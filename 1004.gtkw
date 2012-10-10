@@ -1,0 +1,97 @@
+[*]
+[*] GTKWave Analyzer v3.3.39 (w)1999-2012 BSI
+[*] Thu Oct  4 20:58:36 2012
+[*]
+[dumpfile] "/home/cms/projects/dp705/dump.vcd"
+[dumpfile_mtime] "Thu Oct  4 20:14:31 2012"
+[dumpfile_size] 103114
+[savefile] "/home/cms/projects/dp705/1004.gtkw"
+[timestart] 0
+[size] 1525 1021
+[pos] -1 -1
+*-8.716546 404 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] main.
+[treeopen] main.top.
+[treeopen] main.top.buf1.
+[sst_width] 423
+[signals_width] 227
+[sst_expanded] 1
+[sst_vpaned_height] 299
+@24
+main.top.cycleCounter[15:0]
+@22
+main.top.chk_incorrect[7:0]
+main.top.chk_mesgCnt[7:0]
+@200
+-
+-Read/Write Addresses
+@22
+main.top.buf1.writeAddr[8:0]
+@28
+main.top.buf1.WILL_FIRE_RL_writeBRAM
+@22
+main.top.buf1.mesgInF.D_OUT[32:0]
+@200
+-
+-Rule Fires in Buffer
+@28
+main.top.buf1.WILL_FIRE_RL_readReqBRAM
+main.top.buf1.WILL_FIRE_RL_readBRAM
+@200
+-
+@22
+main.top.buf1.readAddr[8:0]
+@200
+-mesgOutF
+@22
+main.top.buf1.mesgOutF.D_IN[32:0]
+main.top.buf1.mesgOutF.D_OUT[32:0]
+@28
+main.top.buf1.mesgOutF.ENQ
+main.top.buf1.mesgOutF.EMPTY_N
+main.top.buf1.mesgOutF.DEQ
+@200
+-
+-mesgInFOUT
+@22
+main.top.buf1.mesgInF.D_IN[32:0]
+@28
+main.top.buf1.mesgInF.DEQ
+main.top.buf1.mesgInF.ENQ
+@200
+-
+-msgF
+@23
+main.top.buf1.msgF.D_OUT[8:0]
+@22
+main.top.buf1.msgF.D_IN[8:0]
+@28
+main.top.buf1.msgF.DEQ
+main.top.buf1.msgF.EMPTY_N
+main.top.buf1.msgF.FULL_N
+main.top.buf1.msgF.ENQ
+@200
+-msgF VALUE
+@22
+main.top.buf1.msgFval[8:0]
+@200
+-
+-fragment counters
+@22
+main.top.buf1.countSeg[8:0]
+main.top.buf1.countRd[8:0]
+main.top.buf1.count[8:0]
+@200
+-checkF
+@22
+main.top.chk_checkF.D_OUT[32:0]
+@28
+main.top.chk_checkF.DEQ
+@200
+-buffF
+@22
+main.top.chk_buffF.D_OUT[32:0]
+@28
+main.top.chk_buffF.DEQ
+[pattern_trace] 1
+[pattern_trace] 0
