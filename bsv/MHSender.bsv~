@@ -42,12 +42,7 @@ FIFOF#(Bit#(0))              headerF         <- mkFIFOF;
 FIFOF#(Bit#(0))              messageF        <- mkFIFOF;
 
 rule popMhV;
-/*  mhV[0] <= tagged ValidNotEOP 32'h0; 
-  mhV[1] <= tagged ValidNotEOP 32'h1; 
-  mhV[2] <= tagged ValidNotEOP 32'h2; 
-  mhV[3] <= tagged ValidNotEOP 32'h3; 
-  mhV[4] <= tagged ValidNotEOP 32'h4; */
-  for(Integer i=0; i<5; i=i+1)mhV[i] <= tagged ValidNotEOP fromInteger(i);
+  for(Integer i=0; i<5; i=i+1) mhV[i] <= tagged ValidNotEOP fromInteger(i);
   mhV[5] <= packLength(length);
   headerF.enq(?);
 endrule

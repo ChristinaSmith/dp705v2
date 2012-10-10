@@ -9,6 +9,9 @@ import GetPut      ::*;
 import Connectable ::*;
 import Buffer      ::*;
 import MHSender    ::*;
+import MHReciever  ::*;
+import FIFO        ::*;
+import tbDefs      ::*;
 
 
 module mkFTop_dp705 (Empty);
@@ -19,11 +22,10 @@ GeneratorIfc     gen2         <- mkGenerator(False);
 CheckerIfc       chk          <- mkChecker;
 BufferIfc        buf1         <- mkBuffer;
 MHSenderIfc      mhsnd        <- mkMHSender;
-//SendV1Ifc        send         <- mkSendV1;
-//RcvV1Ifc         rcv          <- mkRcvV1;
-Reg#(Bit#(16))  cycleCounter  <- mkReg(0);
-//FIFO between send and rcv
-Reg#(UInt#(9))  length       <- mkReg(0);
+MHRecieverIfc    mhrcv        <- mkMHReciever;
+Reg#(Bit#(16))   cycleCounter <- mkReg(0);
+Reg#(UInt#(9))   length       <- mkReg(0);
+FIFO#(Mesg)      s2rF         <- mkFIFO;
 
 
 // rules here
@@ -35,6 +37,10 @@ rule gobble;
   if(cycleCounter==15000)$finish;
 endrule
 
+//From Generator1 to Double Buffer
+mkConnection(gen1.src, buf1.sink);
+
+//From Double Buffer to MHSender
 rule cnctMHsnd;
   mhsnd.peek.lenPeek(buf1.length.lenShow());
 endrule
@@ -43,10 +49,22 @@ rule cnctDwm(mhsnd.peek.dwm);
   buf1.length.dwm();
 endrule
 
-mkConnection(gen1.src, buf1.sink);
-//imkConnection(buf1.src, chk.sink1);
-mkConnection(gen2.src, chk.sink2);
+mkConnection(buf1.src, mhsnd.sink);
 
-// interfaces provided here
+//From MHSender to MHReciever
+//mkConnection(mhsnd.src, mhrcv.sink);
+
+//From MHSender to s2rF
+mkConnection(mhsnd.src, toPut(s2rF));
+
+//From s2rF to MHReciever
+mkConnection(toGet(s2rF), mhrcv.sink);
+
+//From MHReciever to Checker
+mkConnection(mhrcv.src, chk.sink1);
+
+
+//From Generator1 to Checker
+mkConnection(gen2.src, chk.sink2);
 
 endmodule
