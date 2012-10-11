@@ -8,15 +8,16 @@ import FIFOF      ::*;
 import Vector     ::*;
 import tbDefs     ::*;
 import BRAM       ::*;
+import Accum      ::*;
 
 interface LenShowIfc;
-  method UInt#(9) lenShow();
   method Action dwm();
 endinterface
 
 interface BufferIfc;
   interface Get#(Mesg) src;
   interface Put#(Mesg) sink;
+  interface Get#(UInt#(9)) newLen;
   interface LenShowIfc length;
 endinterface
 
@@ -48,12 +49,15 @@ module mkBuffer(BufferIfc);
 
 FIFO#(Mesg)                  mesgOutF        <- mkFIFO;
 FIFO#(Mesg)                  mesgInF         <- mkFIFO;
-FIFOF#(UInt#(9))             msgF            <- mkFIFOF;
+FIFOF#(UInt#(9))             msgF            <- mkFIFOF1;
 Reg#(UInt#(9))               countWrd        <- mkReg(1); 
 Reg#(UInt#(9))               countRdReq      <- mkReg(0);
 Reg#(UInt#(9))               countRd         <- mkReg(0);
 Reg#(UInt#(9))               readAddr        <- mkReg(0);
 Reg#(UInt#(9))               writeAddr       <- mkReg(0);
+Accumulator2Ifc#(Bit#(8))    accum           <- mkAccumulator2;
+FIFO#(UInt#(9))              lenF            <- mkFIFO;
+Reg#(Bool)                   newMsg          <- mkReg(True);
 
 BRAM_Configure cfg = defaultValue;
 cfg.memorySize = 512;
@@ -65,18 +69,22 @@ rule writeBRAM;                                                 // For every inc
   Bool isEOP = tbDefs::isEOP(y);                                // detect if is an EOP
   Bit#(32) data = stripEOPTag(y);                               // get the raw data
   bram.portA.request.put(makeRequest(True, writeAddr, data));   // write the data to BRAM
+  accum.acc1(1);
   countWrd <= isEOP ? 1 : countWrd + 1;                         // update our count of message length
   if (isEOP) msgF.enq(countWrd);                                // send a token to read port on EOP
   writeAddr <= generateAddr(isEOP, writeAddr);                  // update the Write Address
 endrule
 
-rule readReqBRAM(msgF.notEmpty);                                // When we have a read mesg token...
-  let x = msgF.first;                                           // get the length of the message
-  Bool isEOP = (countRdReq==x);                                 // detect EOP on match
-  if(countRdReq < x)                                            // don't read past end of message
+//can i use implicit conditions for msgF .. do i need if?
+rule readReqBRAM(countRdReq<msgF.first && accum > 0);                        // When we have a read mesg token...
+//  if(countRdReq < msgF.first-1) begin                         // don't read past end of message
     bram.portB.request.put(makeRequest(False, readAddr, 0));    // issue read request
-  countRdReq <= isEOP ? 0 : countRdReq + 1;                     // update our read request position
-  readAddr <= generateAddr(isEOP, readAddr);                    // update the Read Address
+    accum.acc2(-1);
+    //let x = msgF.first-1;                                     // get the length of the message
+    Bool isEOP = (countRdReq==msgF.first-1);                    // detect EOP on match
+    countRdReq <= isEOP ? 0 : countRdReq + 1;                   // update our read request position
+    readAddr <= generateAddr(isEOP, readAddr);                  // update the Read Address
+//  end
 endrule
 
 rule readBRAM;                                                  // For every read response from BRAM...
@@ -85,19 +93,22 @@ rule readBRAM;                                                  // For every rea
   countRd <= isEOP ? 0 : countRd + 1;                           // update our read response position
   Mesg m = isEOP ? tagged ValidEOP d : tagged ValidNotEOP d;    // form the output message
   mesgOutF.enq(m);                                              // send it off
-//  if(isEOP) msgF.deq;                                           // if an EOP, take a token
+//  if(isEOP) msgF.deq;                                         // if an EOP, take a token
+endrule
+
+rule newLength(newMsg);
+  lenF.enq(msgF.first);
+  newMsg <= False;
 endrule
 
 interface src  = toGet(mesgOutF);
 interface sink = toPut(mesgInF);
+interface newLen = toGet(lenF);
 
 interface LenShowIfc length;
-  method UInt#(9) lenShow();
-    return msgF.first();
-  endmethod
-
   method Action dwm();
     msgF.deq();
+    newMsg <= True;
   endmethod
 endinterface
 

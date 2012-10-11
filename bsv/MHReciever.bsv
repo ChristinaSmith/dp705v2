@@ -31,29 +31,28 @@ Reg#(UInt#(9))               countRd         <- mkReg(0);
 Reg#(UInt#(9))               readAddr        <- mkReg(0);
 Reg#(UInt#(9))               writeAddr       <- mkReg(0);
 
-Vector#(6, Reg#(Mesg))       mhReverseV             <- replicateM(mkRegU);
-Reg#(UInt#(9))               hp              <- mkReg(5);
-FIFOF#(Bit#(0))              headerF        <- mkFIFOF;
+Vector#(6, Reg#(Mesg))       mhV             <- replicateM(mkRegU);
+Reg#(UInt#(9))               hp              <- mkReg(0);
+FIFOF#(Bit#(0))              messageF       <- mkFIFOF;
 Reg#(Bit#(16))               length          <-mkReg(0);
+Reg#(Bool)                   endHead         <- mkReg(True);
 
-rule rcvHeader;
-  Bool eop = isEOP(mesgInF.first);
-  if(!eop && hp > 0)
-  begin
-    mhReverseV[hp] <= mesgInF.first;
-    mesgInF.deq;
-  end
-  length <= getLength(mhReverseV[0]);
-  hp <= (hp > 0) ? hp - 1 : 5;
-  if(hp == 0)headerF.enq(?);
+rule rcvHeader(endHead);
+if(hp < 6) begin
+  mhV[hp] <= mesgInF.first;
+  mesgInF.deq;
+end
+  length <= getLength(mhV[5]);
+  hp <= (hp < 6) ? hp + 1 : 0;
+  if(hp == 6)begin messageF.enq(?); endHead <= False; end
 endrule
 
-rule moveMessage(headerF.notEmpty);
+rule moveMessage(messageF.notEmpty);
   Bool eop = isEOP(mesgInF.first);
   mesgOutF.enq(mesgInF.first);
   mesgInF.deq;
   countWrd <= (eop) ? 0 : countWrd + 1;
-  if(countWrd == length)headerF.deq;
+  if(countWrd == length-1)begin messageF.deq; endHead <= True; end
 endrule
 
 interface src  = toGet(mesgOutF);

@@ -41,11 +41,9 @@ endrule
 mkConnection(gen1.src, buf1.sink);
 
 //From Double Buffer to MHSender
-rule cnctMHsnd;
-  mhsnd.peek.lenPeek(buf1.length.lenShow());
-endrule
+mkConnection(buf1.newLen, mhsnd.newLen);
 
-rule cnctDwm(mhsnd.peek.dwm);
+rule cnctDwm(mhsnd.getLen.dwm);
   buf1.length.dwm();
 endrule
 

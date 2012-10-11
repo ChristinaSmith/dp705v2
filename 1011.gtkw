@@ -1,0 +1,186 @@
+[*]
+[*] GTKWave Analyzer v3.3.39 (w)1999-2012 BSI
+[*] Thu Oct 11 21:21:11 2012
+[*]
+[dumpfile] "/home/cms/projects/dp705v2/dump.vcd"
+[dumpfile_mtime] "Thu Oct 11 21:17:25 2012"
+[dumpfile_size] 13885719
+[savefile] "/home/cms/projects/dp705v2/1011.gtkw"
+[timestart] 6272
+[size] 1632 997
+[pos] -1 -1
+*-6.040886 6380 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] main.
+[treeopen] main.top.
+[treeopen] main.top.mhrcv.
+[sst_width] 217
+[signals_width] 314
+[sst_expanded] 1
+[sst_vpaned_height] 291
+@22
+main.top.chk_incorrect[7:0]
+@200
+-Generator Output
+@22
+main.top.gen1_mesgOutF.D_OUT[32:0]
+@28
+main.top.gen1_mesgOutF.DEQ
+@200
+-message length
+@22
+main.top.buf1.msgF.D_IN[8:0]
+@28
+main.top.buf1.msgF.ENQ
+@24
+main.top.buf1.msgF.D_OUT[8:0]
+@28
+main.top.buf1.msgF.DEQ
+@200
+-
+-buff input
+@22
+main.top.buf1.mesgInF.D_IN[32:0]
+@28
+main.top.buf1.mesgInF.ENQ
+@22
+main.top.buf1.mesgInF.D_OUT[32:0]
+@28
+main.top.buf1.mesgInF.DEQ
+@200
+-
+-buff internals
+-counts
+@22
+main.top.buf1.countWrd[8:0]
+main.top.buf1.countRdReq[8:0]
+main.top.buf1.countRd[8:0]
+@200
+-write
+@22
+main.top.buf1.writeAddr[8:0]
+@28
+main.top.buf1.WILL_FIRE_RL_writeBRAM
+@200
+-readReq
+@28
+main.top.buf1.WILL_FIRE_RL_readReqBRAM
+@22
+main.top.buf1.readAddr[8:0]
+@200
+-read
+@28
+main.top.buf1.WILL_FIRE_RL_readBRAM
+main.top.buf1.CAN_FIRE_RL_readBRAM
+@200
+-
+-buff output
+@22
+main.top.buf1.mesgOutF.D_IN[32:0]
+@28
+main.top.buf1.mesgOutF.ENQ
+@22
+main.top.buf1.mesgOutF.D_OUT[32:0]
+@28
+main.top.buf1.mesgOutF.DEQ
+@200
+-
+-MH send
+@22
+main.top.mhsnd.mesgOutF.D_IN[32:0]
+@28
+main.top.mhsnd.mesgOutF.ENQ
+@22
+main.top.mhsnd.mesgOutF.D_OUT[32:0]
+@28
+main.top.mhsnd.mesgOutF.DEQ
+@200
+-
+@22
+main.top.mhsnd.hp[8:0]
+@28
+main.top.mhsnd.WILL_FIRE_RL_popMhV
+main.top.mhsnd.WILL_FIRE_RL_sndHead
+@22
+main.top.mhsnd.fragLenCnt[8:0]
+@28
+main.top.mhsnd.WILL_FIRE_RL_sndMesg
+@200
+-
+-lengthF
+@22
+main.top.mhsnd.lengthF.D_IN[8:0]
+@28
+main.top.mhsnd.lengthF.ENQ
+@22
+main.top.mhsnd.lengthF.D_OUT[8:0]
+@28
+main.top.mhsnd.lengthF.DEQ
+main.top.mhsnd.lengthF.EMPTY_N
+@200
+-
+-lenF
+@22
+main.top.buf1.lenF.D_IN[8:0]
+@28
+main.top.buf1.lenF.ENQ
+@22
+main.top.buf1.lenF.D_OUT[8:0]
+@28
+main.top.buf1.lenF.DEQ
+@200
+-
+-s2rF
+@22
+main.top.s2rF.D_IN[32:0]
+@28
+main.top.s2rF.ENQ
+@22
+main.top.s2rF.D_OUT[32:0]
+@28
+main.top.s2rF.DEQ
+main.top.s2rF.EMPTY_N
+@29
+main.top.s2rF.FULL_N
+@22
+main.top.mhsnd.fragLenCnt[8:0]
+@200
+-
+-MH rcv
+-msgIn
+@22
+main.top.mhrcv.mesgInF.D_IN[32:0]
+@28
+main.top.mhrcv.mesgInF.ENQ
+@22
+main.top.mhrcv.mesgInF.D_OUT[32:0]
+@28
+main.top.mhrcv.mesgInF.DEQ
+@200
+-
+-rules
+@22
+main.top.mhrcv.mhV_1[32:0]
+main.top.mhrcv.mhV_2[32:0]
+main.top.mhrcv.mhV_3[32:0]
+main.top.mhrcv.mhV_4[32:0]
+main.top.mhrcv.mhV_5[32:0]
+main.top.mhrcv.length[15:0]
+main.top.mhrcv.hp[8:0]
+@28
+main.top.mhrcv.WILL_FIRE_RL_rcvHeader
+main.top.mhrcv.WILL_FIRE_RL_moveMessage
+@22
+main.top.mhrcv.countWrd[15:0]
+@200
+-
+-msgOut
+@22
+main.top.mhrcv.mesgOutF.D_IN[32:0]
+@28
+main.top.mhrcv.mesgOutF.ENQ
+@22
+main.top.mhrcv.mesgOutF.D_OUT[32:0]
+@28
+main.top.mhrcv.mesgOutF.DEQ
+[pattern_trace] 1
+[pattern_trace] 0
