@@ -1,0 +1,17 @@
+# .gitignore file for OpenCPI
+# ssiegel 2010-06-01 creation
+#
+*~
+*.swp
+*.log
+*.flash
+*.sof
+*.rpt
+*.smsg
+*.vcd
+*out*
+*.gtkw
+bluesim/
+gen_files/
+gtkwave/
+info/

@@ -7,7 +7,6 @@ import FIFO       ::*;
 import FIFOF      ::*;
 import Vector     ::*;
 import tbDefs     ::*;
-import BRAM       ::*;
 
 interface MHRecieverIfc;
   interface Get#(Mesg) src;
@@ -24,37 +23,42 @@ module mkMHReciever(MHRecieverIfc);
 
 FIFO#(Mesg)                  mesgOutF        <- mkFIFO;
 FIFO#(Mesg)                  mesgInF         <- mkFIFO;
-FIFOF#(UInt#(9))             msgF            <- mkFIFOF;
+FIFOF#(Bit#(0))              messageF        <- mkFIFOF;
 Reg#(Bit#(16))               countWrd        <- mkReg(0); 
-Reg#(UInt#(9))               countRdReq      <- mkReg(0);
-Reg#(UInt#(9))               countRd         <- mkReg(0);
-Reg#(UInt#(9))               readAddr        <- mkReg(0);
-Reg#(UInt#(9))               writeAddr       <- mkReg(0);
-
-Vector#(6, Reg#(Mesg))       mhV             <- replicateM(mkRegU);
+Reg#(Bit#(16))               length          <- mkReg(0);
 Reg#(UInt#(9))               hp              <- mkReg(0);
-FIFOF#(Bit#(0))              messageF       <- mkFIFOF;
-Reg#(Bit#(16))               length          <-mkReg(0);
 Reg#(Bool)                   endHead         <- mkReg(True);
+Vector#(6, Reg#(Mesg))       mhV             <- replicateM(mkRegU);
 
-rule rcvHeader(endHead);
-if(hp < 6) begin
-  mhV[hp] <= mesgInF.first;
-  mesgInF.deq;
-end
+/*rule rcvHeader(endHead);
   length <= getLength(mhV[5]);
   hp <= (hp < 6) ? hp + 1 : 0;
-  if(hp == 6)begin messageF.enq(?); endHead <= False; end
+  if(hp < 6) begin
+    mhV[hp] <= mesgInF.first;
+    mesgInF.deq;
+  end
+  if(hp == 6)begin 
+    messageF.enq(?); 
+    endHead <= False; 
+  end
 endrule
 
 rule moveMessage(messageF.notEmpty);
-  Bool eop = isEOP(mesgInF.first);
+  Bool eom = (countWrd == length-1);
   mesgOutF.enq(mesgInF.first);
   mesgInF.deq;
-  countWrd <= (eop) ? 0 : countWrd + 1;
-  if(countWrd == length-1)begin messageF.deq; endHead <= True; end
+  countWrd <= (eom) ? 0 : countWrd + 1;
+  if(eom) begin 
+    messageF.deq; 
+    endHead <= True; 
+  end
 endrule
+*/
 
+rule take;
+  mesgOutF.enq(mesgInF.first);
+  mesgInF.deq;
+endrule
 interface src  = toGet(mesgOutF);
 interface sink = toPut(mesgInF);
 
