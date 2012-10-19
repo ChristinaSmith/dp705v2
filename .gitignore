@@ -16,3 +16,8 @@ bluesim/
 gen_files/
 gtkwave/
 info/
+vivado/
+bluesim/
+isim/
+rtl/
+

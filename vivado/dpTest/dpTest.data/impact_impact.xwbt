@@ -1,8 +1,0 @@
-INTSTYLE=impact
-INFILE=/home/cms/projects/dp705v2/vivado/dpTest/dpTest.data/impact.xsl
-OUTFILE=/home/cms/projects/dp705v2/vivado/dpTest/dpTest.data/impact.xsl
-FAMILY=Single
-PART=Single
-WORKINGDIR=/home/cms/projects/dp705v2/vivado/dpTest/dpTest.data
-LICENSE=iMPACT
-USER_INFO=iMPACT

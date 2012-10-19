@@ -1,9 +1,0 @@
-#-----------------------------------------------------------
-# Vivado v2012.2.1 (64-bit)
-# Build 200253 by xbuild on Wed Aug 29 11:42:44 MDT 2012
-# Start of session at: Fri Oct 19 11:57:00 2012
-# Process ID: 12867
-# Log file: /home/cms/projects/dp705v2/vivado/dpTest/dpTest.runs/impl_1/fpgaTop.rdi
-# Journal file: /home/cms/projects/dp705v2/vivado/dpTest/dpTest.runs/impl_1/vivado.jou
-#-----------------------------------------------------------
-source fpgaTop.tcl -notrace
