@@ -1,4 +1,4 @@
-// Checker.bsv 
+// Checker.bsv - Compares two inputs for equality 
 // Copyright (c) 2012 Atomic Rules LLC - ALL RIGHTS RESERVED
 // Christina Smith
 
@@ -11,14 +11,13 @@ import DReg     ::*;
 interface CheckerIfc;
   interface Put#(Mesg) sink1;
   interface Put#(Mesg) sink2;
- // interface Get#(Bit#(4)) incorrect;
   method Bit#(4) incorrectCnt;
 endinterface
 
 
 (* synthesize *)
 module mkChecker(CheckerIfc);
-// state instanced here
+
 FIFO#(Mesg)      buffF       <- mkFIFO;
 Reg#(Bit#(8))    incorrect   <- mkReg(0);
 FIFO#(Mesg)      checkF      <- mkFIFO;
@@ -26,11 +25,10 @@ Reg#(Bit#(8))    minLen      <- mkReg('1);
 Reg#(Bit#(8))    maxLen      <- mkReg('0);
 Reg#(Bit#(8))    mesgCnt     <- mkReg(1);
 Reg#(Bit#(8))    wordCnt     <- mkReg(1);
-Reg#(Bool)    cmpFire     <- mkDReg(False);
-Reg#(Bool)    cmpEOP     <- mkDReg(False);
-Reg#(Bool)    cmpMatch   <- mkDReg(False);
+Reg#(Bool)       cmpFire     <- mkDReg(False);
+Reg#(Bool)       cmpEOP      <- mkDReg(False);
+Reg#(Bool)       cmpMatch    <- mkDReg(False);
 
-// rules here
 rule compare;
   cmpFire <= True;
 
@@ -43,18 +41,17 @@ rule compare;
   cmpMatch <= eMatchR;
   Bool eop = isEOP(chk);
   cmpEOP <= eop;
-//  $display("match: %b, eop: %b", eMatchR, eop);
 
   wordCnt <= (eMatchR && eop) ? 1 : (eMatchR) ? wordCnt + 1 : wordCnt;
 
   if(eMatchR && eop) begin
-    $display("Message Count: %d || Length: %d || Last word rcv'd: %0x", mesgCnt, wordCnt, received);
+//    $display("Message Count: %d || Length: %d || Last word rcv'd: %0x", mesgCnt, wordCnt, received);           // used for debug
     mesgCnt <= mesgCnt + 1;
     minLen <= (wordCnt < minLen) ? wordCnt : minLen;
     maxLen <= (wordCnt > maxLen) ? wordCnt : maxLen;
   end else
-
-  if(mesgCnt % 50 == 1)$display("Max Length: %d, Min Length: %d", maxLen, minLen);
+ 
+ // if(mesgCnt % 50 == 1)$display("Max Length: %d, Min Length: %d", maxLen, minLen);       // Used for debug
     
 
   if(!eMatchR) begin 
@@ -64,7 +61,6 @@ rule compare;
   end
 endrule
 
-// interfaces provided here
   interface sink1 = toPut(buffF);
   interface sink2 = toPut(checkF);
   method Bit#(4) incorrectCnt = pack(incorrect[3:0]);

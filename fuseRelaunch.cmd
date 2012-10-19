@@ -1,1 +1,0 @@
--v "0" -o "./out.isim" -prj "/tmp/fuse.prj.y14229" -sourcelibdir "rtl" -sourcelibdir "/opt/Bluespec/Bluespec-2012.09.beta1B/lib/Libraries" -sourcelibdir "/opt/Bluespec/Bluespec-2012.09.beta1B/lib/Verilog" -sourcelibext ".v" -d "TOP=mkFTop_dp705" -L "unisims_ver" -t "worx_mkFTop_dp705.glbl" -t "worx_mkFTop_dp705.main" 

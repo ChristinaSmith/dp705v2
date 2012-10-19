@@ -28,30 +28,31 @@ Reg#(Bool)                   updateFH        <- mkReg(True);
 Vector#(3, Reg#(Mesg))       fhV             <- replicateM(mkRegU);
 Reg#(Bool)                   sentFrmHead     <- mkReg(False);
 
-rule popFhV(updateFH);
-  for(Integer i=0; i<3; i=i+1) fhV[i] <= tagged ValidNotEOP fromInteger(i+10);
-  headerF.enq(?);      // enq token indicating a new Frame Header is Ready
-  updateFH <= False;
+rule popFhV(updateFH);                                  // Rule: Populate header fields of frame header                             
+  for(Integer i=0; i<3; i=i+1)                          // For each of the 3 fields
+    fhV[i] <= tagged ValidNotEOP fromInteger(i+10);     // Write arbitrary value for each field
+  headerF.enq(?);                                       // enq token indicating a new Frame Header is Ready
+  updateFH <= False;                                    // Signal done populating header
 endrule
 
 // sndHead and sndMesg are mutually exclusive; we must send exactly one frame header
 // for every frame payload (zero or more message headers). We use the Bool state sentFrmHead
 // to implement this alternation pattern.
 
-rule sndHead(headerF.notEmpty && !sentFrmHead);
-  mesgOutF.enq(fhV[fhp-1]);
-  Bool eoh = (fhp == frmHeadLen);
-  fhp <= (eoh) ? 1 : fhp+1; 
-  if (eoh) headerF.deq;   // consume the Frame Header is Ready token
-  updateFH    <= eoh;     // trigger generation of the next FH
-  sentFrmHead <= eoh;     // indicate that Frame Header has been sent
+rule sndHead(headerF.notEmpty && !sentFrmHead);         // Rule: Output the generated header when fields populated and not sending body 
+  mesgOutF.enq(fhV[fhp-1]);                             // Output frame header one field at a time
+  Bool eoh = (fhp == frmHeadLen);                       // Determine end of header by comparing frame header pointer and frame header length
+  fhp <= (eoh) ? 1 : fhp+1;                             // update frame header pointer
+  if (eoh) headerF.deq;                                 // consume the Frame Header is Ready token
+  updateFH    <= eoh;                                   // trigger generation of the next FH
+  sentFrmHead <= eoh;                                   // indicate that Frame Header has been sent
 endrule
 
-rule sndMesg (sentFrmHead);
-  Bool eom = isEOP(mesgInF.first);
-  mesgOutF.enq(mesgInF.first);
-  mesgInF.deq;
-  sentFrmHead <= !eom;
+rule sndMesg (sentFrmHead);                             // Rule: Output message body when frame header is sent
+  Bool eom = isEOP(mesgInF.first);                      // Test for end of message at each word
+  mesgOutF.enq(mesgInF.first);                          // Output each word
+  mesgInF.deq;                                          // Throw away word after sent
+  sentFrmHead <= !eom;                                  // update flag
 endrule
 
 interface ingress = toPut(mesgInF);

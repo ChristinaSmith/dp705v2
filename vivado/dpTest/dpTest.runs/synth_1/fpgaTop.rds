@@ -1,8 +1,8 @@
 #-----------------------------------------------------------
 # Vivado v2012.2.1 (64-bit)
 # Build 200253 by xbuild on Wed Aug 29 11:42:44 MDT 2012
-# Start of session at: Tue Oct 16 14:27:05 2012
-# Process ID: 13257
+# Start of session at: Fri Oct 19 11:55:22 2012
+# Process ID: 12814
 # Log file: /home/cms/projects/dp705v2/vivado/dpTest/dpTest.runs/synth_1/fpgaTop.rds
 # Journal file: /home/cms/projects/dp705v2/vivado/dpTest/dpTest.runs/synth_1/vivado.jou
 #-----------------------------------------------------------
@@ -163,9 +163,9 @@ Finished Validating User XDC Constraints
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Phase 0 | Netlist Checksum: 9fcc2be1
+Phase 0 | Netlist Checksum: 0010865b
 Using Coregen IP in: /opt/Xilinx/14.2/ISE_DS/ISE/coregen/ip/xilinx/primary/com/xilinx/ip
-starting synthesize : Time (s): cpu = 00:00:42 ; elapsed = 00:00:42 . Memory (MB): peak = 556.141 ; gain = 456.906
+starting synthesize : Time (s): cpu = 00:00:41 ; elapsed = 00:00:43 . Memory (MB): peak = 557.141 ; gain = 457.906
 INFO: [Synth 8-638] synthesizing module 'fpgaTop' [/home/cms/projects/dp705v2/vivado/dpTest/dpTest.srcs/sources_1/imports/dp705v2/fpgaTop_dp705.v:5]
 
 INFO: [Synth 8-638] synthesizing module 'IBUFGDS' [/opt/Xilinx/14.2/ISE_DS/PlanAhead/scripts/rt/data/unisim_comp.v:11169]
@@ -261,13 +261,13 @@ INFO: [Synth 8-256] done synthesizing module 'mkFTop_dp705' (15#16) [/home/cms/p
 
 INFO: [Synth 8-256] done synthesizing module 'fpgaTop' (16#16) [/home/cms/projects/dp705v2/vivado/dpTest/dpTest.srcs/sources_1/imports/dp705v2/fpgaTop_dp705.v:5]
 
-finished synthesize : Time (s): cpu = 00:00:53 ; elapsed = 00:00:53 . Memory (MB): peak = 556.141 ; gain = 456.906
+finished synthesize : Time (s): cpu = 00:00:53 ; elapsed = 00:00:54 . Memory (MB): peak = 557.141 ; gain = 457.906
 
 ---------------------------------------------------------------------------------
 Applying 'set_property' XDC Constraints...
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:53 ; elapsed = 00:00:54 . Memory (MB): peak = 556.141 ; gain = 456.906
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:53 ; elapsed = 00:00:54 . Memory (MB): peak = 557.141 ; gain = 457.906
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -291,7 +291,7 @@ Part Resources:
 DSPs: 840 (col length:140)
 BRAMs: 890 (col length: RAMB8 0 RAMB16 0 RAMB18 140 RAMB36 70
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:01:06 ; elapsed = 00:01:07 . Memory (MB): peak = 556.141 ; gain = 456.906
+Finished Loading Part and Timing Information : Time (s): cpu = 00:01:06 ; elapsed = 00:01:07 . Memory (MB): peak = 557.141 ; gain = 457.906
 ---------------------------------------------------------------------------------
 
 
@@ -301,32 +301,34 @@ RTL Component Statistics
 Detailed RTL Component Info : 
 +---Adders : 
 	   2 Input     32 Bit       Adders := 1     
+	   3 Input     10 Bit       Adders := 1     
 	   2 Input      9 Bit       Adders := 15    
 	   2 Input      8 Bit       Adders := 18    
-	   3 Input      8 Bit       Adders := 1     
 	   2 Input      4 Bit       Adders := 3     
 	   3 Input      3 Bit       Adders := 1     
 	   2 Input      1 Bit       Adders := 4     
 +---XORs : 
+	   2 Input     10 Bit         XORs := 1     
 	   2 Input      3 Bit         XORs := 2     
 +---Registers : 
 	               64 Bit    Registers := 2     
 	               33 Bit    Registers := 39    
 	               32 Bit    Registers := 11    
 	               16 Bit    Registers := 1     
+	               10 Bit    Registers := 1     
 	                9 Bit    Registers := 26    
-	                8 Bit    Registers := 3     
+	                8 Bit    Registers := 2     
 	                4 Bit    Registers := 4     
 	                3 Bit    Registers := 2     
 	                2 Bit    Registers := 2     
-	                1 Bit    Registers := 65    
+	                1 Bit    Registers := 66    
 +---RAMs : 
 	              16K Bit         RAMs := 1     
 	               64 Bit         RAMs := 2     
 +---Muxes : 
-	   3 Input     33 Bit        Muxes := 1     
-	   6 Input     33 Bit        Muxes := 1     
 	   2 Input     33 Bit        Muxes := 4     
+	   6 Input     33 Bit        Muxes := 1     
+	   3 Input     33 Bit        Muxes := 1     
 	   2 Input     32 Bit        Muxes := 21    
 	   2 Input      9 Bit        Muxes := 7     
 	   2 Input      8 Bit        Muxes := 1     
@@ -374,14 +376,14 @@ INFO: [Synth 8-3332] Sequential element (\bram_serverAdapterA_outDataCore/D_OUT_
 INFO: [Synth 8-3332] Sequential element (\bram_serverAdapterA_outDataCore/D_OUT_reg[2] ) is unused and will be removed from module extram__2.
 INFO: [Synth 8-3332] Sequential element (\bram_serverAdapterA_outDataCore/D_OUT_reg[1] ) is unused and will be removed from module extram__2.
 INFO: [Synth 8-3332] Sequential element (\bram_serverAdapterA_outDataCore/D_OUT_reg[0] ) is unused and will be removed from module extram__2.
-INFO: [Synth 8-3332] Sequential element (\buffF/data1_reg_reg[32] ) is unused and will be removed from module reg__64.
-INFO: [Synth 8-3332] Sequential element (\buffF/data0_reg_reg[32] ) is unused and will be removed from module reg__63.
-INFO: [Synth 8-3332] Sequential element (\checkF/data1_reg_reg[32] ) is unused and will be removed from module reg__68.
-INFO: [Synth 8-3332] Sequential element (\checkF/data0_reg_reg[32] ) is unused and will be removed from module reg__67.
-INFO: [Synth 8-3332] Sequential element (\incorrect_reg[7] ) is unused and will be removed from module reg__24.
-INFO: [Synth 8-3332] Sequential element (\incorrect_reg[6] ) is unused and will be removed from module reg__24.
-INFO: [Synth 8-3332] Sequential element (\incorrect_reg[5] ) is unused and will be removed from module reg__24.
-INFO: [Synth 8-3332] Sequential element (\incorrect_reg[4] ) is unused and will be removed from module reg__24.
+INFO: [Synth 8-3332] Sequential element (\buffF/data1_reg_reg[32] ) is unused and will be removed from module reg__65.
+INFO: [Synth 8-3332] Sequential element (\buffF/data0_reg_reg[32] ) is unused and will be removed from module reg__64.
+INFO: [Synth 8-3332] Sequential element (\checkF/data1_reg_reg[32] ) is unused and will be removed from module reg__69.
+INFO: [Synth 8-3332] Sequential element (\checkF/data0_reg_reg[32] ) is unused and will be removed from module reg__68.
+INFO: [Synth 8-3332] Sequential element (\incorrect_reg[7] ) is unused and will be removed from module reg__25.
+INFO: [Synth 8-3332] Sequential element (\incorrect_reg[6] ) is unused and will be removed from module reg__25.
+INFO: [Synth 8-3332] Sequential element (\incorrect_reg[5] ) is unused and will be removed from module reg__25.
+INFO: [Synth 8-3332] Sequential element (\incorrect_reg[4] ) is unused and will be removed from module reg__25.
 INFO: [Synth 8-3332] Sequential element (\incorrect_reg[7] ) is unused and will be removed from module counter__8.
 INFO: [Synth 8-3332] Sequential element (\incorrect_reg[6] ) is unused and will be removed from module counter__8.
 INFO: [Synth 8-3332] Sequential element (\incorrect_reg[5] ) is unused and will be removed from module counter__8.
@@ -390,12 +392,12 @@ INFO: [Synth 8-3332] Sequential element (\buffF/data1_reg_reg[32] ) is unused an
 INFO: [Synth 8-3332] Sequential element (\buffF/data0_reg_reg[32] ) is unused and will be removed from module mkChecker.
 INFO: [Synth 8-3332] Sequential element (\checkF/data1_reg_reg[32] ) is unused and will be removed from module mkChecker.
 INFO: [Synth 8-3332] Sequential element (\checkF/data0_reg_reg[32] ) is unused and will be removed from module mkChecker.
-INFO: [Synth 8-3332] Sequential element (\msgDoneF/empty_reg_reg ) is unused and will be removed from module reg__27.
+INFO: [Synth 8-3332] Sequential element (\msgDoneF/empty_reg_reg ) is unused and will be removed from module reg__28.
 WARNING: [Common 17-14] Message 'Synth 8-3332' appears 50 times and further instances of the messages will be disabled. Use the Tcl command set_msg_limit to change the current settings.
-INFO: [Synth 8-3332] Sequential element (\msgDoneF/full_reg_reg ) is unused and will be removed from module reg__28.
+INFO: [Synth 8-3332] Sequential element (\msgDoneF/full_reg_reg ) is unused and will be removed from module reg__29.
 -------> Message [OPT-118] suppressed 108 times
 ---------------------------------------------------------------------------------
-Finished Cross Boundary Optimization : Time (s): cpu = 00:01:07 ; elapsed = 00:01:07 . Memory (MB): peak = 556.141 ; gain = 456.906
+Finished Cross Boundary Optimization : Time (s): cpu = 00:01:06 ; elapsed = 00:01:08 . Memory (MB): peak = 557.141 ; gain = 457.906
 ---------------------------------------------------------------------------------
 
 INFO: [Synth 8-284] extracting RAM hierarchy for 'bram_serverAdapterB_outDataCore/arr_reg'
@@ -413,9 +415,9 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (ftop/fhsn
 INFO: [Synth 8-3333] propagating constant 1 across sequential element (ftop/fhsnd/\fhV_reg[3] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (ftop/fhsnd/\fhV_reg[23] )
 -------> Message [OPT-118] suppressed 324 times
-info: Area reduced by  0.5%
+info: Area reduced by  0.7%
 ---------------------------------------------------------------------------------
-Finished Area Optimization : Time (s): cpu = 00:01:09 ; elapsed = 00:01:10 . Memory (MB): peak = 564.176 ; gain = 464.941
+Finished Area Optimization : Time (s): cpu = 00:01:09 ; elapsed = 00:01:10 . Memory (MB): peak = 565.176 ; gain = 465.941
 ---------------------------------------------------------------------------------
 
 
@@ -427,7 +429,7 @@ Start Timing Optimization
 Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:09 ; elapsed = 00:01:10 . Memory (MB): peak = 564.176 ; gain = 464.941
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:09 ; elapsed = 00:01:10 . Memory (MB): peak = 565.176 ; gain = 465.941
 ---------------------------------------------------------------------------------
 
 info: (0) optimizing 'ftop/buf1/i_0/\bram_memory/RAM_reg /ENARDEN' (path group default) @ 1014.0ps(1/1) (0 secs)
@@ -438,16 +440,16 @@ info: start optimizing sub-critical range ...
 info: done optimizing sub-critical range for path group default.
 info: done optimizing sub-critical range.
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:01:11 ; elapsed = 00:01:11 . Memory (MB): peak = 566.184 ; gain = 466.949
+Finished Timing Optimization : Time (s): cpu = 00:01:10 ; elapsed = 00:01:12 . Memory (MB): peak = 566.180 ; gain = 466.945
 ---------------------------------------------------------------------------------
 
 
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
--------> Message [OPT-118] suppressed 41 times
+-------> Message [OPT-118] suppressed 42 times
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:01:12 ; elapsed = 00:01:13 . Memory (MB): peak = 579.773 ; gain = 480.539
+Finished Technology Mapping : Time (s): cpu = 00:01:12 ; elapsed = 00:01:14 . Memory (MB): peak = 579.773 ; gain = 480.539
 ---------------------------------------------------------------------------------
 
 
@@ -471,7 +473,7 @@ Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:01:14 ; elapsed = 00:01:15 . Memory (MB): peak = 579.773 ; gain = 480.539
+Finished IO Insertion : Time (s): cpu = 00:01:13 ; elapsed = 00:01:15 . Memory (MB): peak = 579.773 ; gain = 480.539
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -503,20 +505,20 @@ Report Cell Usage:
      |Cell      |Count
 -----+----------+-----
 1    |BUFG      |    1
-2    |CARRY4    |   10
+2    |CARRY4    |   11
 3    |LUT1      |   45
-4    |LUT2      |  148
-5    |LUT3      |  154
-6    |LUT4      |  112
-7    |LUT5      |  212
-8    |LUT6      |  629
+4    |LUT2      |  150
+5    |LUT3      |  151
+6    |LUT4      |  109
+7    |LUT5      |  211
+8    |LUT6      |  634
 9    |RAM32M    |    6
 10   |RAMB36E1_1|    1
 11   |XORCY     |    1
-12   |FD        |  545
+12   |FD        |  546
 13   |FDC       |   16
 14   |FDE       |  545
-15   |FDR       |   43
+15   |FDR       |   45
 16   |FDRE      |  284
 17   |FDSE      |   28
 18   |IBUF      |    1
@@ -527,8 +529,8 @@ Report Instance Areas:
 -----+-------------------------------------+------------------------+-----
      |Instance                             |Module                  |Cells
 -----+-------------------------------------+------------------------+-----
-1    |top                                  |                        | 2790
-2    |  ftop                               |mkFTop_dp705            | 2768
+1    |top                                  |                        | 2794
+2    |  ftop                               |mkFTop_dp705            | 2771
 3    |    chk                              |mkChecker               |  231
 4    |      checkF                         |FIFO2__parameterized0_17|  118
 5    |      buffF                          |FIFO2__parameterized0_18|  105
@@ -538,9 +540,9 @@ Report Instance Areas:
 9    |    mhrcv                            |mkMHReceiver            |  222
 10   |      mesgOutF                       |FIFO2__parameterized0_13|  104
 11   |      mesgInF                        |FIFO2__parameterized0_14|  108
-12   |    buf1                             |mkBuffer                |  539
+12   |    buf1                             |mkBuffer                |  546
 13   |      mesgInF                        |FIFO2__parameterized0_10|  129
-14   |      msgF                           |FIFO1                   |   67
+14   |      msgF                           |FIFO1                   |   68
 15   |      bram_memory                    |BRAM2                   |    2
 16   |      bram_serverAdapterB_outDataCore|SizedFIFO               |  123
 17   |      lenF                           |FIFO2_11                |   36
@@ -555,31 +557,31 @@ Report Instance Areas:
 26   |      lengthF                        |FIFO2_4                 |   38
 27   |      messageF                       |FIFO20_5                |   44
 28   |      mesgOutF                       |FIFO2__parameterized0_6 |  108
-29   |    gen1                             |mkGenerator             |  412
+29   |    gen1                             |mkGenerator             |  410
 30   |      mesgOutF                       |FIFO2__parameterized0_1 |  174
-31   |      randomF                        |FIFO2_2                 |   41
-32   |    gen2                             |mkGenerator_0           |  408
+31   |      randomF                        |FIFO2_2                 |   39
+32   |    gen2                             |mkGenerator_0           |  406
 33   |      mesgOutF                       |FIFO2__parameterized0   |  170
-34   |      randomF                        |FIFO2                   |   41
+34   |      randomF                        |FIFO2                   |   39
 35   |    rstndb                           |SyncResetA              |   18
 -----+-------------------------------------+------------------------+-----
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:01:14 ; elapsed = 00:01:15 . Memory (MB): peak = 579.773 ; gain = 480.539
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:13 ; elapsed = 00:01:15 . Memory (MB): peak = 579.773 ; gain = 480.539
 ---------------------------------------------------------------------------------
 
-Synthesis Optimization Complete: Time (s): cpu = 00:01:12 ; elapsed = 00:01:12 . Memory (MB): peak = 579.773 ; gain = 430.164
-INFO: [Netlist 29-17] Analyzing 1156 Unisim elements for replacement
+Synthesis Optimization Complete: Time (s): cpu = 00:01:11 ; elapsed = 00:01:13 . Memory (MB): peak = 579.773 ; gain = 430.164
+INFO: [Netlist 29-17] Analyzing 1159 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 1156 instances were transformed.
+  A total of 1159 instances were transformed.
   (MUXCY,XORCY) => CARRY4: 1 instances
-  FD => FDCE: 545 instances
+  FD => FDCE: 546 instances
   FDC => FDCE: 16 instances
   FDE => FDCE: 545 instances
-  FDR => FDRE: 43 instances
+  FDR => FDRE: 45 instances
   RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 6 instances
 
-Phase 0 | Netlist Checksum: bc98f4c8
+Phase 0 | Netlist Checksum: 9e68f179
 INFO: [Common 17-83] Releasing license: Synthesis
 synth_design: Time (s): cpu = 00:01:16 ; elapsed = 00:01:17 . Memory (MB): peak = 721.430 ; gain = 571.820
 # write_checkpoint fpgaTop.dcp

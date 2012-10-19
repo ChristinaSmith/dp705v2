@@ -14,11 +14,13 @@ import Clocks      ::*;
 import Connectable ::*;
 import FIFO        ::*;
 import GetPut      ::*;
-//interface FTop_dp705Ifc;
-//  (* always_ready *) method Bit#(8) ledOutput;
-//endinterface
-//(* synthesize, default_clock_osc = "sys0_clk", default_reset = "sys0_rstn" *)
-module mkFTop_dp705(Empty); /*(FTop_dp705Ifc);*/
+interface FTop_dp705Ifc;
+  (* always_ready *) method Bit#(8) ledOutput;
+endinterface
+
+(* synthesize, default_clock_osc = "sys0_clk", default_reset = "sys0_rstn" *)
+module mkFTop_dp705(FTop_dp705Ifc);
+
 Clock cc <- exposeCurrentClock;
 Reset rstndb <- mkAsyncResetFromCR(16, cc);
 
@@ -35,8 +37,6 @@ Reg#(Bit#(32))   cycleCounter <- mkReg(0, reset_by rstndb);
 Reg#(UInt#(9))   length       <- mkReg(0, reset_by rstndb);
 FIFO#(Mesg)      s2rF         <- mkFIFO(reset_by rstndb);
 
-
-// rules here
 rule cycleCount;
   cycleCounter <= cycleCounter + 1;
 endrule
@@ -72,14 +72,14 @@ mkConnection(mhrcv.egress, chk.sink1);
 //From Generator1 to Checker
 mkConnection(gen2.src, chk.sink2);
 
-/*method Bit#(8) ledOutput;
+method Bit#(8) ledOutput;
   Bit#(4) y = truncate(cycleCounter >> 28);
   Bit#(8) z = {y, chk.incorrectCnt};
   return z;
 endmethod
-*/
+
 endmodule
 
-//module tb_mkFTop_dp705(Empty);
-//  FTop_dp705Ifc dut <- mkFTop_dp705;
-//endmodule
+module tb_mkFTop_dp705(Empty);
+  FTop_dp705Ifc dut <- mkFTop_dp705;
+endmodule

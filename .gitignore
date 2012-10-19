@@ -9,6 +9,7 @@
 *.rpt
 *.smsg
 *.vcd
+*fuse*
 *out*
 *.gtkw
 bluesim/

@@ -47,36 +47,30 @@ Reg#(Bool)                   eopR            <- mkDReg(False);
 Vector#(6, Reg#(Mesg))       mhV             <- replicateM(mkRegU);
 
 
-rule popMhV(lengthF.notEmpty);
-  for(Integer i=0; i<5; i=i+1) mhV[i] <= tagged ValidNotEOP fromInteger(i);
-  mhV[5] <= packLength(lengthF.first);
-//  lenR <= tagged Valid lengthF.first;
-  lengthF.deq;
+rule popMhV(lengthF.notEmpty);                                // Rule: Populates the MH fields when length is available
+  for(Integer i=0; i<5; i=i+1)                                // For each of the first 5 fields
+    mhV[i] <= tagged ValidNotEOP fromInteger(i);              // The sixth field assign length
+  mhV[5] <= packLength(lengthF.first);                        // Done with length
+  lengthF.deq;                                                // Notify to send header
   headerF.enq(?);
 endrule
 
-rule sndHead(headerF.notEmpty);
-  mesgOutF.enq(mhV[hp]);
-  Bool eoh = (hp == msgHeadLen);
-  hp <= (eoh) ? 0 : hp + 1; 
-  if(eoh) begin
-//    lengthF.deq;
-    headerF.deq; 
-    messageF.enq(?); 
+rule sndHead(headerF.notEmpty);                               // Rule: Output header when fields are populated
+  mesgOutF.enq(mhV[hp]);                                      // Output header fields one at a time
+  Bool eoh = (hp == msgHeadLen);                              // Determine if end of header 
+  hp <= (eoh) ? 0 : hp + 1;                                   // Update header pointer, reset if end of header
+  if(eoh) begin                                               // if end of header...
+    headerF.deq;                                              // Notify done sending header
+    messageF.enq(?);                                          // Notify ready to send message body
   end
 endrule
 
-rule sndMesg(messageF.notEmpty);
-//  Bool eom = (fragLenCnt == fromMaybe(maxBound, lenR));
-  Bool eom = (isEOP(mesgInF.first));
-  eopR <= eom;
-  mesgOutF.enq(mesgInF.first);
-//  fragLenCnt <= eom ? 1 : fragLenCnt + 1;
-  if(eom) begin 
-    messageF.deq;
-//    lenToFHF.enq(fromMaybe(maxBound, lenR));
-  end
-  mesgInF.deq;
+rule sndMesg(messageF.notEmpty);                              // Rule: Output message body when header is sent
+  Bool eom = (isEOP(mesgInF.first));                          // Determine if end of message
+  eopR <= eom;                                                // Write value in DReg, used for dwm()
+  mesgOutF.enq(mesgInF.first);                                // Output message one word at a time
+  mesgInF.deq;                                                // Remove word that was just sent
+  if(eom) messageF.deq;                                       // On end of message, notify done sending
 endrule
 
 interface src  = toGet(mesgOutF);
@@ -85,8 +79,8 @@ interface newLen = toPut(lengthF);
 interface giveLen = toGet(lenToFHF);
 
 interface LenGetIfc getLen;
-  method Bool dwm();
-    //return (fragLenCnt == fromMaybe(maxBound,lenR));
+  method Bool dwm();               // TODO: clarify token atomicity.. what is the proper machinery to indicate that we are done with a message?
+    //return isEOP(mesgInF.first);
     return (eopR); //DReg pulse may lose real EOP
   endmethod
 endinterface

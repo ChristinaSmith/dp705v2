@@ -7,82 +7,73 @@ import FIFO       ::*;
 import FIFOF      ::*;
 import Vector     ::*;
 import tbDefs     ::*;
-import BRAM       ::*;
 
 interface MHReceiverIfc;
-  interface Get#(Mesg) src;
-  interface Put#(Mesg) sink;
+  interface Put#(Mesg) ingress;
+  interface Get#(Mesg) egress;
 endinterface
 
-function BRAMRequest#(UInt#(9), Bit#(32)) makeRequest(Bool write, UInt#(9) addr, Bit#(32) data);
-  return BRAMRequest{
-                    write: write,
-                    responseOnWrite: False,
-                    address: addr,
-                    datain: data
-                    };
-endfunction
-
-function Bit#(32) stripEOPTag(Mesg m);
-  case (m) matches
-    tagged ValidNotEOP .z: return (z);
-    tagged ValidEOP    .z: return (z);
-  endcase
-endfunction
-
-function UInt#(9) generateAddr(Bool isEOP, UInt#(9) oldAddr);
-  Bit#(9) newAddr = pack(oldAddr);
-  newAddr[8] = ~newAddr[8];
-  newAddr[7:0] = 0;
-  return isEOP ? unpack(newAddr) : oldAddr + 1;
+function Bit#(16) getLength(Mesg m);
+  Bit#(32) word = stripEOPTag(m);
+  return word[31:16];
 endfunction
 
 (* synthesize *)
 module mkMHReceiver(MHReceiverIfc);
 
-FIFO#(Mesg)                  mesgOutF        <- mkFIFO;
 FIFO#(Mesg)                  mesgInF         <- mkFIFO;
-FIFOF#(UInt#(9))             msgF            <- mkFIFOF;
-Reg#(UInt#(9))               countWrd        <- mkReg(1); 
-Reg#(UInt#(9))               countRdReq      <- mkReg(0);
-Reg#(UInt#(9))               countRd         <- mkReg(0);
-Reg#(UInt#(9))               readAddr        <- mkReg(0);
-Reg#(UInt#(9))               writeAddr       <- mkReg(0);
+FIFO#(Mesg)                  mesgOutF        <- mkFIFO;
+Reg#(UInt#(4))               mhp             <- mkReg(0);
+Reg#(Bool)                   captMsgHead     <- mkReg(False);
+Vector#(6, Reg#(Mesg))       mhV             <- replicateM(mkRegU);
 
-BRAM_Configure cfg = defaultValue;
-cfg.memorySize = 512;
-cfg.latency    = 1;
-BRAM2Port#(UInt#(9), Bit#(32)) bram <- mkBRAM2Server(cfg);
+//Reg#(Bit#(16))               countWrd        <- mkReg(0); 
+//Reg#(Bit#(16))               length          <- mkReg(0);
 
-rule writeBRAM;                                                 // For every incident Mesg word...
-  let y = mesgInF.first; mesgInF.deq;                           // dequeue the incident Mesg
-  Bool isEOP = tbDefs::isEOP(y);                                // detect if is an EOP
-  Bit#(32) data = stripEOPTag(y);                               // get the raw data
-  bram.portA.request.put(makeRequest(True, writeAddr, data));   // write the data to BRAM
-  countWrd <= isEOP ? 1 : countWrd + 1;                         // update our count of message length
-  if (isEOP) msgF.enq(countWrd);                                // send a token to read port on EOP
-  writeAddr <= generateAddr(isEOP, writeAddr);                  // update the Write Address
+rule captMsgHeader (!captMsgHead);
+  Bool eoh = (mhp==5);
+  mhp <= (eoh) ? 0 : mhp+1;
+  mhV[mhp] <= mesgInF.first; mesgInF.deq();
+  captMsgHead <= eoh;
 endrule
 
-rule readReqBRAM(msgF.notEmpty);                                // When we have a read mesg token...
-  let x = msgF.first;                                           // get the length of the message
-  Bool isEOP = (countRdReq==x);                                 // detect EOP on match
-  if(countRdReq < x)                                            // don't read past end of message
-    bram.portB.request.put(makeRequest(False, readAddr, 0));    // issue read request
-  countRdReq <= isEOP ? 0 : countRdReq + 1;                     // update our read request position
-  readAddr <= generateAddr(isEOP, readAddr);                    // update the Read Address
+rule passMsgPayload (captMsgHead);
+  Bool eom = isEOP(mesgInF.first);
+  mesgOutF.enq(mesgInF.first); mesgInF.deq();
+  captMsgHead <= !eom;
 endrule
 
-rule readBRAM;                                                  // For every read response from BRAM...
-  let d <- bram.portB.response.get;                             // get the data
-  Bool isEOP = (countRd == msgF.first-1);                         // check if it is an EOP
-  countRd <= isEOP ? 0 : countRd + 1;                           // update our read response position
-  Mesg m = isEOP ? tagged ValidEOP d : tagged ValidNotEOP d;    // form the output message
-  mesgOutF.enq(m);                                              // send it off
-  if(isEOP) msgF.deq;                                           // if an EOP, take a token
+
+/*rule rcvHeader(endHead);
+  length <= getLength(mhV[5]);
+  hp <= (hp < 6) ? hp + 1 : 0;
+  if(hp < 6) begin
+    mhV[hp] <= mesgInF.first;
+    mesgInF.deq;
+  end
+  if(hp == 6)begin 
+    messageF.enq(?); 
+    endHead <= False; 
+  end
 endrule
 
-interface src  = toGet(mesgOutF);
-interface sink = toPut(mesgInF);
+rule moveMessage(messageF.notEmpty);
+  Bool eom = (countWrd == length-1);
+  mesgOutF.enq(mesgInF.first);
+  mesgInF.deq;
+  countWrd <= (eom) ? 0 : countWrd + 1;
+  if(eom) begin 
+    messageF.deq; 
+    endHead <= True; 
+  end
+endrule
+*/
+
+rule take;
+  mesgOutF.enq(mesgInF.first);
+  mesgInF.deq;
+endrule
+interface ingress = toPut(mesgInF);
+interface egress  = toGet(mesgOutF);
 
 endmodule
